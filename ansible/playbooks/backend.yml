@@ -8,15 +8,20 @@
 
     - name: Copy Flask app into backend container
       ansible.builtin.command: docker cp {{ playbook_dir }}/../../files/app.py backend:/app/app.py
+      changed_when: false
 
     - name: Copy requirements.txt into backend container
       ansible.builtin.command: docker cp {{ playbook_dir }}/../../files/requirements.txt backend:/app/requirements.txt
+      changed_when: false
 
     - name: Install dependencies inside backend container
       ansible.builtin.command: docker exec backend pip install -r /app/requirements.txt
+      changed_when: false
 
     - name: Kill any existing Flask process
       ansible.builtin.command: docker exec backend pkill -f "python /app/app.py" || true
-
+      changed_when: false
+      
     - name: Start Flask app inside backend container
       ansible.builtin.command: docker exec -d backend python /app/app.py
+      changed_when: false
