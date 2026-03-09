@@ -12,6 +12,5 @@ def validate_app(url):
         print(f"❌ Validation failed: {e}")
 
 
-
 if __name__ == "__main__":
     validate_app()
