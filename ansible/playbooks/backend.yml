@@ -19,7 +19,8 @@
       changed_when: false
 
     - name: Kill any existing Flask process
-      ansible.builtin.command: docker exec backend pkill -f "python /app/app.py" || true
+      ansible.builtin.command: docker exec backend pkill -f "python /app/app.py"
+      ignore_errors: true
       changed_when: false
 
     - name: Start Flask app inside backend container
