@@ -15,11 +15,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
+
 
       - name: Cache pip
         uses: actions/cache@v3
@@ -29,11 +25,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # - name: Install dependencies
-      #   run: |
-      #     pip install --upgrade pip
-      #     pip install -r requirements.txt
-      #     pip install flake8==7.0.0 pytest==8.3.5 ansible-core==2.16.2 ansible-lint==6.22.0 psutil==5.9.4
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          # pip install flake8==7.0.0 pytest==8.3.5 ansible-core==2.16.2 ansible-lint==6.22.0 psutil==5.9.4
 
       - name: Start Flask app
         run: |
