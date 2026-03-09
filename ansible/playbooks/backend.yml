@@ -11,7 +11,7 @@
       changed_when: false
 
     - name: Copy requirements.txt into backend container
-      ansible.builtin.command: docker cp {{ playbook_dir }}/../../files/requirements.txt backend:/app/requirements.txt
+      ansible.builtin.command: docker cp {{ playbook_dir }}/../../requirements.txt backend:/app/requirements.txt
       changed_when: false
 
     - name: Install dependencies inside backend container
