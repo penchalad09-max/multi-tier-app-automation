@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r files/requirements.txt
-          pip install requests==2.31.0 ansible==9.0.0 ansible-lint==6.22.0 pytest==8.3.5 flake8==7.0.0
+          pip install requests==2.31.0 ansible==6.7.0 ansible-lint==6.22.0 pytest==8.3.5 flake8==7.0.0
 
       - name: Lint Python
         run: flake8 python/
