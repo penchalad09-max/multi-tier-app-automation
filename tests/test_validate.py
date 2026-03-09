@@ -1,9 +1,14 @@
+import requests
+from unittest.mock import patch
 from python.validate_app import validate_app
 
 def test_validate_app(capsys):
-    validate_app("http://localhost:8081")
-    captured = capsys.readouterr()
-    assert "✅ App is serving content correctly." in captured.out
+    with patch("requests.get") as mock_get:
+        mock_get.return_value.status_code = 200
+        validate_app("http://localhost:8081")
+        captured = capsys.readouterr()
+        assert "✅ App is serving content correctly." in captured.out
+
 
 
 
