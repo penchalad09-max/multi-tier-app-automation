@@ -13,4 +13,4 @@ def validate_app(url):
 
 
 if __name__ == "__main__":
-    validate_app()
+    validate_app("http://localhost:8081")
