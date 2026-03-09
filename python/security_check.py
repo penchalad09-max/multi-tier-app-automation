@@ -1,5 +1,6 @@
 import socket
 
+
 def check_ports(host="localhost", ports=[8081, 5000, 3306]):
     for port in ports:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

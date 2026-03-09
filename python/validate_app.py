@@ -1,5 +1,6 @@
 import requests
 
+
 def validate_app(url="http://localhost:8081"):
     try:
         r = requests.get(url)
