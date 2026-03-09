@@ -1,3 +1,9 @@
+name: Multi-Tier App Automation
+
+on:
+  push:
+    branches: [ "main" ]
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -22,7 +28,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install flake8==7.0.0 pytest==8.3.5
+          pip install flake8==7.0.0 pytest==8.3.5 ansible-core==2.16.2 ansible-lint==6.22.0
 
       - name: Start Flask app
         run: |
@@ -37,3 +43,31 @@ jobs:
 
       - name: Lint Ansible
         run: ansible-lint ansible/playbooks/
+
+  cd:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Terraform Init & Apply
+        run: |
+          cd terraform
+          terraform init
+          terraform apply -auto-approve
+
+      - name: Run Ansible Playbooks
+        run: |
+          ansible-playbook -i ansible/inventory ansible/playbooks/frontend.yml
+          ansible-playbook -i ansible/inventory ansible/playbooks/backend.yml
+          ansible-playbook -i ansible/inventory ansible/playbooks/database.yml
+
+      - name: Security Check
+        run: python python/security_check.py
+
+      - name: Validate App
+        run: python python/validate_app.py
+
+      - name: Monitoring Check
+        run: python monitoring/alert.py
