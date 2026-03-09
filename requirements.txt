@@ -4,4 +4,4 @@ flask
 mysql-connector-python
 requests==2.31.0
 pytest
-psutil==5.9.8
+psutil
