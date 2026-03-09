@@ -4,10 +4,11 @@
 #     - name: Copy custom index.html
 #       command: docker cp files/index.html frontend:/usr/share/nginx/html/index.html
 
-- hosts: localhost
+- name: Frontend setup
+  hosts: localhost
   connection: local
   tasks:
     - name: Copy custom index.html
-      shell: docker cp {{ playbook_dir }}/../../files/index.html frontend:/usr/share/nginx/html/index.html
+      ansible.builtin.command: docker cp {{ playbook_dir }}/../../files/index.html frontend:/usr/share/nginx/html/index.html
 
 

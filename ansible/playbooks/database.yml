@@ -1,8 +1,9 @@
-- hosts: localhost
+- name: Database setup
+  hosts: localhost
   connection: local
   tasks:
     - name: Initialize MySQL schema and table
-      shell: |
+      ansible.builtin.command: |
         docker exec db mysql -uroot -prootpass -e "
           CREATE DATABASE IF NOT EXISTS testdb;
           USE testdb;
