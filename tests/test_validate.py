@@ -5,10 +5,11 @@ from python.validate_app import validate_app
 def test_validate_app(capsys):
     with patch("requests.get") as mock_get:
         mock_get.return_value.status_code = 200
-        mock_get.return_value.text = "expected content"  # match what validate_app checks
+        mock_get.return_value.text = "App is running"  # match the check in validate_app
         validate_app("http://localhost:8081")
         captured = capsys.readouterr()
         assert "✅ App is serving content correctly." in captured.out
+
 
 
 
