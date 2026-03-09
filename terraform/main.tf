@@ -41,7 +41,8 @@ resource "docker_container" "backend" {
 resource "docker_image" "backend_image" {
   name = "backend:latest"
   build {
-    context = "${path.module}/../files"
+    context    = "${path.module}/../backend"
+    dockerfile = "${path.module}/../backend/Dockerfile"
   }
 }
 
