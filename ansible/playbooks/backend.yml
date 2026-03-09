@@ -1,0 +1,20 @@
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Create /app directory inside backend container
+      shell: docker exec backend mkdir -p /app
+
+    - name: Copy Flask app into backend container
+      shell: docker cp {{ playbook_dir }}/../../files/app.py backend:/app/app.py
+
+    - name: Copy requirements.txt into backend container
+      shell: docker cp {{ playbook_dir }}/../../files/requirements.txt backend:/app/requirements.txt
+
+    - name: Install dependencies inside backend container
+      shell: docker exec backend pip install -r /app/requirements.txt
+
+    - name: Kill any existing Flask process
+      shell: docker exec backend pkill -f "python /app/app.py" || true
+
+    - name: Start Flask app inside backend container
+      shell: docker exec -d backend python /app/app.py

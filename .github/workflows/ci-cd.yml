@@ -1,0 +1,67 @@
+name: Multi-Tier App Automation
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('files/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          pip install -r files/requirements.txt
+          pip install requests==2.31.0 ansible==9.0.0 ansible-lint==6.22.0 pytest==8.3.5 flake8==7.0.0
+
+      - name: Lint Python
+        run: flake8 python/
+
+      - name: Test Python
+        run: pytest tests/
+
+      - name: Lint Ansible
+        run: ansible-lint ansible/playbooks/
+
+  cd:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Terraform Init & Apply
+        run: |
+          cd terraform
+          terraform init
+          terraform apply -auto-approve
+
+      - name: Run Ansible Playbooks
+        run: |
+          ansible-playbook -i ansible/inventory ansible/playbooks/frontend.yml
+          ansible-playbook -i ansible/inventory ansible/playbooks/backend.yml
+          ansible-playbook -i ansible/inventory ansible/playbooks/database.yml
+
+      - name: Security Check
+        run: python python/security_check.py
+
+      - name: Validate App
+        run: python python/validate_app.py
+
+      - name: Monitoring Check
+        run: python monitoring/alert.py
