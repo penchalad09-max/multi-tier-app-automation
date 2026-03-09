@@ -11,5 +11,6 @@ def check_ports(host="localhost", ports=[8081, 5000, 3306]):
             print(f"⚠️ Port {port} is closed.")
         sock.close()
 
+
 if __name__ == "__main__":
     check_ports()

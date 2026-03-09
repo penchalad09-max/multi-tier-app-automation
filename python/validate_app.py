@@ -11,5 +11,6 @@ def validate_app(url="http://localhost:8081"):
     except Exception as e:
         print(f"❌ Validation failed: {e}")
 
+
 if __name__ == "__main__":
     validate_app()
